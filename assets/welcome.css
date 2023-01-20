@@ -1,0 +1,19 @@
+
+body {
+  /* background-image: url("http://localhost/bhupendra/assets/images/loan.jpeg");
+  
+  background-repeat: no-repeat;
+  background-size: cover; */
+  background-color: skyblue;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+} 
+
