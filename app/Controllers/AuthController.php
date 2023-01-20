@@ -1,4 +1,13 @@
 <?php
+namespace App\Controllers;
+use App\Models\UserModel;
+use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\API\ResponseTrait;
+
+
+class AuthController extends  ResourceController
+{
+
 public  function create_token($user_id) {
         $this->db->select('token');
         $this->db->where('user_id', $user_id);
@@ -9,7 +18,7 @@ public  function create_token($user_id) {
                 'user_id' => $user_id,
                 'logout_time' => null
             );
-            $this->db->update('user')
+            $this->db->update('user');
         }
     
     }
@@ -39,6 +48,4 @@ public  function create_token($user_id) {
         }
     
     }
-
-
-?>
+}
