@@ -8,7 +8,7 @@ class UserModel extends Model
     protected $table = 'users';
     protected $PrimaryKey = 'sno';
 
-    protected $allowedFields = ['fname', 'lname', 'mobile', 'email', 'password'];
+    protected $allowedFields = ['fname', 'lname', 'mobile', 'email', 'password','image'];
 
 
     public function getUserDetail($where)
@@ -40,12 +40,10 @@ class UserModel extends Model
         // print_r($data);
         $db = db_connect();
         $result = $db->table('users')->where('sno', $sno)->update($data);
-        if ($db->affectedRows() == 1) {
-            die("data update");
-        }
+        
         // $result= $this->update($sno,$data);
-        echo $result;
-        print_r($this->errors());
+     
+       
 
         # code...
     }

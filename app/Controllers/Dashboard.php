@@ -95,26 +95,15 @@ class Dashboard extends BaseController
         // print_r($sno);
         // die();
         $user->deletedata($sno);
-
-
-
     }
-
-
 
     public function paging($filter = '')
     {
         $user = model(UserModel::class);
-
-
         $data = [
             'user' => $user->orderBy('fname', $filter)->paginate(5),
             'pager' => $user->pager,
         ];
-
-
-
-
         return $data;
     }
 
