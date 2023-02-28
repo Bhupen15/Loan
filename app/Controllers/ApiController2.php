@@ -10,7 +10,7 @@ use CodeIgniter\API\ResponseTrait;
 require_once("/opt/lampp/htdocs/bhupendra/php-jwt/src/JWT.php");
 require_once("/opt/lampp/htdocs/bhupendra/php-jwt/src/Key.php");
 
-class ApiController extends ResourceController
+class ApiController2 extends ResourceController
 {
     use ResponseTrait;
   //THis is done by ritik
@@ -18,6 +18,7 @@ class ApiController extends ResourceController
 
     public function __construct()
     {
+        
         // header('Access-Control-Allow-Origin: *');
         // header("Access-Control-Allow-Origin: *");
         // header("Access-Control-Allow-Headers: Authorization, X-API-KEY, Origin,X-Requested-With, Content-Type, Accept, Access-Control-Requested-Method");
@@ -34,13 +35,15 @@ class ApiController extends ResourceController
     {
     
         $headers = $this->request->getHeaders();
+
+
         
         if (isset($headers['Authentication'])) {
             $header = $headers['Authentication'];
             $secretKey = getenv('JWT_SECRET');
             $token = explode(' ', $header)[1]; 
             
-            // $token = substr($token, 1,-1);
+            $token = substr($token, 1,-1);
             
            
            
@@ -53,14 +56,23 @@ class ApiController extends ResourceController
                 $usermodel = model(UserModel::class);
 
                 $page = $this->request->getGet('page');
-                $limit=5;
-                // $limit = $this->request->getVar('pagelimit');
+                // $limit=5;
+                $limit = $this->request->getVar('pagelimit');
+                $filterdata=array();
 
                 $offset=($page-1)*$limit;
+
+                isset($_GET['email']) ? ($filterdata['email'] = $_GET['email']) : "";
+                isset($_GET['mobile']) ? ($filterdata['mobile'] = $_GET['mobile']) : "";
+                isset($_GET['name']) ? $filterdata['fname'] = $_GET['name'] : "";
+
+                
+                $data = $usermodel->select()->like($filterdata)->limit($limit,$offset)->get()->getResultArray();
+           
                
                
-                $data = $usermodel->limit($limit,$offset)->get()->getResult();
-                $totaluser = $usermodel->countAll();
+                // $data = $usermodel->->get()->getResult();
+                $totaluser = $usermodel->like($filterdata)->countAllResults();
                 $totalpage = ceil($totaluser / $limit);
                 $response = [
                     "status"=>200,
@@ -156,7 +168,7 @@ class ApiController extends ResourceController
 
     public function login()
     {
-
+        
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
         
@@ -473,6 +485,8 @@ class ApiController extends ResourceController
             'remark' => $this->request->getVar('remark'),
         ];
         $isData = $loanmodel->loanBysno($sno);
+        // print_r($isData);
+        // die;
 
         if (isset($isData)) {
             $result = $loanmodel->UpdateLoanDetails($sno, $data);
@@ -539,6 +553,12 @@ class ApiController extends ResourceController
         }
 
 
+    }
+
+    public function hello()
+    {
+        echo "hello";
+        # code...
     }
 
 }
