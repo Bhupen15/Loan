@@ -364,6 +364,7 @@ class ApiController2 extends ResourceController
             'pincode' => $this->request->getVar('pincode'),
             'country' => $this->request->getVar('country'),
             'mobile' => $this->request->getVar('mobile'),
+            'sno'=>$this->request->getVar('sno')
             
         ];
         // print_r($data);
@@ -523,9 +524,9 @@ class ApiController2 extends ResourceController
         $sno = $this->request->getVar('sno');
         $data = [
             'status' => $this->request->getVar('status'),
+            'date'=> date("Y/m/d")
         ];
         $isData = $loanmodel->loanBysno($sno);
-
         if (isset($isData)) {
             $result = $loanmodel->UpdateLoanDetails($sno, $data);
 
@@ -548,7 +549,7 @@ class ApiController2 extends ResourceController
             }
             return $this->respondCreated($response);
         } else {
-            print_r("hello");
+            print_r(json_encode(array("msg"=>"Error While updaing the status")));
             die();
         }
 
@@ -559,6 +560,45 @@ class ApiController2 extends ResourceController
     {
         echo "hello";
         # code...
+    }
+
+    public function payEmi()
+    {
+        $loanmodel = new LoanModel();
+        $id = $this->request->getVar('id');
+        $data = [
+            'totalemi' => $this->request->getVar('totalemi'),
+        ];
+        $isData = $loanmodel->loanById($id);
+        if ($id) {
+            if (isset($isData)) {
+                // $result = $usermodel->UpdateUserDetails($id, $data);
+                $result = $loanmodel->update($id, $data);
+
+                if ($result) {
+                    $response = [
+                        "status" => 200,
+                        "success" => true,
+                        "error" => null
+                    ];
+                } else {
+                    $error = $loanmodel->errors();
+                    $response = [
+                        "status" => 200,
+                        "success" => false,
+                        "error" => $error
+                    ];
+
+                }
+                return $this->respondCreated($response);
+            } else {
+                print_r("hello");
+                die();
+            }
+        } else {
+            echo "hello";
+            die;
+        }
     }
 
 }

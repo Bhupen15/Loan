@@ -3,12 +3,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class ReactModel extends Model
 {
-    protected $table = 'users';
+    protected $table = 'category';
     protected $PrimaryKey = 'sno';
 
-    protected $allowedFields = ['fname', 'lname', 'mobile', 'email', 'password','image'];
+    protected $allowedFields = ['category'];
 
 
     public function getUserDetail($where)
@@ -22,6 +22,12 @@ class UserModel extends Model
         // select * from user where email=email ;
         return $value;
         # code...
+    }
+
+    public function dataById($sno)
+    {
+        $result = $this->select()->where('sno', $sno)->get()->getRowArray();
+        return $result;
     }
 
     public function getAllUser()
@@ -39,11 +45,11 @@ class UserModel extends Model
 
         // print_r($data);
         $db = db_connect();
-        $result = $db->table('users')->where('sno', $sno)->update($data);
-        
+        $result = $db->table('category')->where('sno', $sno)->update($data);
+
         // $result= $this->update($sno,$data);
-     
-       
+
+
 
         # code...
     }
@@ -52,12 +58,12 @@ class UserModel extends Model
     {
 
         $db = db_connect();
-        $result = $db->table('users')->where('sno', $sno)->delete();
-     
+        $result = $db->table('category')->where('sno', $sno)->delete();
+
     }
 
 
-    
+
 }
 
 
